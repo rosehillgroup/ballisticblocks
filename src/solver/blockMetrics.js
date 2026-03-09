@@ -13,7 +13,7 @@ import {
  * Compute metrics from a list of block placements.
  * Ported from Security_2025_deploy/ballistic_block_calculator_280525.html lines 686-806
  */
-export function computeMetrics(placements, courses) {
+export function computeMetrics(placements, courses, structureType, buildableDimensions) {
   const counts = {
     standard: 0,
     large: 0,
@@ -56,10 +56,25 @@ export function computeMetrics(placements, courses) {
     containerText = `${containers} containers needed`;
   }
 
+  // Perimeter / wall length
+  const dims = buildableDimensions || {};
+  let perimeterMM;
+  if (structureType === 'straight') {
+    perimeterMM = dims.lengthMM || 0;
+  } else if (structureType === 'uShape') {
+    perimeterMM = (dims.widthMM || 0) + 2 * (dims.depthMM || 0);
+  } else {
+    perimeterMM = 2 * ((dims.lengthMM || 0) + (dims.widthMM || 0));
+  }
+  const perimeterM = perimeterMM / 1000;
+  const weightPerMetre = perimeterM > 0 ? Math.round(totalWeight / perimeterM) : 0;
+
   return {
     counts,
     totalBlocks,
     totalWeight,
+    perimeterMM,
+    weightPerMetre,
     standardPallets,
     largePallets,
     totalPallets,

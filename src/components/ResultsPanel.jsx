@@ -51,12 +51,12 @@ export default function ResultsPanel() {
           <div className="breakdown-row">
             <span className="block-swatch standard"></span>
             <span>Standard Blocks</span>
-            <span className="breakdown-value">{metrics.counts.standard}</span>
+            <span className="breakdown-value">{metrics.counts.standard} ({metrics.standardPallets} pallets @ 24/pallet)</span>
           </div>
           <div className="breakdown-row">
             <span className="block-swatch large"></span>
             <span>Large Blocks</span>
-            <span className="breakdown-value">{metrics.counts.large}</span>
+            <span className="breakdown-value">{metrics.counts.large}{metrics.largePallets > 0 ? ` (${metrics.largePallets} pallets @ 16/pallet)` : ''}</span>
           </div>
           <div className="breakdown-row">
             <span className="block-swatch cornerA"></span>
@@ -73,15 +73,13 @@ export default function ResultsPanel() {
         <div className="breakdown-section">
           <h4>Logistics</h4>
           <div className="breakdown-row">
-            <span>Standard Pallets (24/pallet)</span>
-            <span className="breakdown-value">{metrics.standardPallets}</span>
+            <span>Wall Length</span>
+            <span className="breakdown-value">{(metrics.perimeterMM / 1000).toFixed(2)} m</span>
           </div>
-          {metrics.largePallets > 0 && (
-            <div className="breakdown-row">
-              <span>Large Pallets (16/pallet)</span>
-              <span className="breakdown-value">{metrics.largePallets}</span>
-            </div>
-          )}
+          <div className="breakdown-row">
+            <span>Weight per Metre</span>
+            <span className="breakdown-value">{metrics.weightPerMetre.toLocaleString()} kg/m</span>
+          </div>
           <div className="breakdown-row">
             <span>Truck Loads (26t)</span>
             <span className="breakdown-value">

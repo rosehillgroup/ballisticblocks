@@ -101,7 +101,7 @@ export function solveStructure(structureType, dimensions, courses) {
       break;
   }
 
-  const metrics = computeMetrics(placements, courses);
+  const metrics = computeMetrics(placements, courses, structureType, dimensions);
   return { placements, metrics };
 }
 

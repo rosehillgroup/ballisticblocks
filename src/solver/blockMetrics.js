@@ -20,23 +20,28 @@ export function computeMetrics(placements, courses, structureType, buildableDime
     large: 0,
     cornerA: 0,
     cornerB: 0,
+    largeCornerA: 0,
+    largeCornerB: 0,
   };
 
   for (const p of placements) {
     counts[p.type] = (counts[p.type] || 0) + 1;
   }
 
-  const totalBlocks = counts.standard + counts.large + counts.cornerA + counts.cornerB;
+  const totalBlocks = counts.standard + counts.large
+    + counts.cornerA + counts.cornerB
+    + counts.largeCornerA + counts.largeCornerB;
 
-  // Weight: standard/corner = 34kg, large = 47kg
+  // Weight: standard/standard-corner = 34kg, large/large-corner = 47kg
   const standardWeight = (counts.standard + counts.cornerA + counts.cornerB) * STANDARD_WEIGHT_KG;
-  const largeWeight = counts.large * LARGE_WEIGHT_KG;
+  const largeWeight = (counts.large + counts.largeCornerA + counts.largeCornerB) * LARGE_WEIGHT_KG;
   const totalWeight = standardWeight + largeWeight;
 
-  // Pallets: standard-size blocks (incl corners) = 24/pallet, large = 16/pallet
+  // Pallets: standard-size blocks (incl std corners) = 24/pallet, large (incl lg corners) = 16/pallet
   const standardBlocksTotal = counts.standard + counts.cornerA + counts.cornerB;
+  const largeBlocksTotal = counts.large + counts.largeCornerA + counts.largeCornerB;
   const standardPallets = Math.ceil(standardBlocksTotal / STANDARD_PALLET_COUNT);
-  const largePallets = Math.ceil(counts.large / LARGE_PALLET_COUNT);
+  const largePallets = Math.ceil(largeBlocksTotal / LARGE_PALLET_COUNT);
   const totalPallets = standardPallets + largePallets;
 
   // Structure height

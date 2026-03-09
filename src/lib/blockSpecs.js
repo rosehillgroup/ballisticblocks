@@ -21,7 +21,19 @@ const standardNubOffset = (STANDARD_LENGTH - 305) / 2; // 152.5mm
 const largeNubOffset = (LARGE_LENGTH - 458) / 2; // 152.5mm
 
 // Standard T-shape footprint shared by standard, cornerA, and cornerB.
+// Large T-shape footprint shared by large, largeCornerA, and largeCornerB.
 // Corner blocks differ only in solver metadata and rotation, not outer geometry.
+const LARGE_POLYGON = [
+  [0, 0],
+  [LARGE_LENGTH, 0],
+  [LARGE_LENGTH, SPINE_DEPTH],
+  [largeNubOffset + 458, SPINE_DEPTH],
+  [largeNubOffset + 458, BLOCK_DEPTH],
+  [largeNubOffset, BLOCK_DEPTH],
+  [largeNubOffset, SPINE_DEPTH],
+  [0, SPINE_DEPTH],
+];
+
 const STANDARD_POLYGON = [
   [0, 0],
   [STANDARD_LENGTH, 0],
@@ -55,17 +67,7 @@ export const BLOCK_SPECS = {
     nubWidth: 458,
     nubDepth: NUB_DEPTH,
     weight: LARGE_WEIGHT_KG,
-    // T-shape footprint: wider nub
-    polygon: [
-      [0, 0],
-      [LARGE_LENGTH, 0],
-      [LARGE_LENGTH, SPINE_DEPTH],
-      [largeNubOffset + 458, SPINE_DEPTH],
-      [largeNubOffset + 458, BLOCK_DEPTH],
-      [largeNubOffset, BLOCK_DEPTH],
-      [largeNubOffset, SPINE_DEPTH],
-      [0, SPINE_DEPTH],
-    ],
+    polygon: LARGE_POLYGON,
   },
 
   cornerA: {
@@ -103,6 +105,40 @@ export const BLOCK_SPECS = {
       junctionArm2End: [0, CORNER_JUNCTION_SPAN],
       fillStart: CORNER_JUNCTION_SPAN - OVERLAP, // 305mm from corner anchor
       junctionEnvelope: [CORNER_JUNCTION_SPAN, CORNER_JUNCTION_SPAN],
+    },
+  },
+
+  largeCornerA: {
+    id: 'largeCornerA',
+    label: 'Large Corner A',
+    length: LARGE_LENGTH,
+    height: BLOCK_HEIGHT,
+    depth: BLOCK_DEPTH,
+    weight: LARGE_WEIGHT_KG,
+    polygon: LARGE_POLYGON,
+    meta: {
+      origin: [0, 0],
+      junctionArm1End: [LARGE_LENGTH, 0],
+      junctionArm2End: [0, LARGE_LENGTH],
+      fillStart: LARGE_LENGTH - OVERLAP, // 458mm from corner anchor
+      junctionEnvelope: [LARGE_LENGTH, LARGE_LENGTH],
+    },
+  },
+
+  largeCornerB: {
+    id: 'largeCornerB',
+    label: 'Large Corner B',
+    length: LARGE_LENGTH,
+    height: BLOCK_HEIGHT,
+    depth: BLOCK_DEPTH,
+    weight: LARGE_WEIGHT_KG,
+    polygon: LARGE_POLYGON,
+    meta: {
+      origin: [0, 0],
+      junctionArm1End: [LARGE_LENGTH, 0],
+      junctionArm2End: [0, LARGE_LENGTH],
+      fillStart: LARGE_LENGTH - OVERLAP, // 458mm from corner anchor
+      junctionEnvelope: [LARGE_LENGTH, LARGE_LENGTH],
     },
   },
 };

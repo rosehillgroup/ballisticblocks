@@ -18,6 +18,8 @@ export const BLOCK_COLORS = {
   large: '#e8a840',      // amber/gold
   cornerA: '#c0392b',    // red
   cornerB: '#27ae60',    // green
+  largeCornerA: '#922d22', // dark red
+  largeCornerB: '#1e8449', // dark green
   highlight: '#ff6b35',
 };
 

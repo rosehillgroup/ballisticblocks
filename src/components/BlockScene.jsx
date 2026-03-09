@@ -4,19 +4,21 @@ import { getRenderShellGeometry } from '../geometry/blockGeometry.js';
 import { BLOCK_HEIGHT, COURSE_RISE, BLOCK_DEPTH, STANDARD_LENGTH, LARGE_LENGTH } from '../lib/constants.js';
 import useConfiguratorStore from '../stores/configuratorStore.js';
 
-const BLOCK_TYPES = ['standard', 'large', 'cornerA', 'cornerB'];
+const BLOCK_TYPES = ['standard', 'large', 'cornerA', 'cornerB', 'largeCornerA', 'largeCornerB'];
 const SHELL_BASE_COLORS = {
-  standard: '#5c7a99', // blue
-  large: '#e8a840',    // orange
-  cornerA: '#c0392b',  // red
-  cornerB: '#27ae60',  // green
+  standard: '#5c7a99',    // blue
+  large: '#e8a840',       // orange
+  cornerA: '#c0392b',     // red
+  cornerB: '#27ae60',     // green
+  largeCornerA: '#922d22', // dark red
+  largeCornerB: '#1e8449', // dark green
 };
 const PRESENTATION_COLOR = '#5e6369'; // dark rubber graphite
 const PRESENTATION_ROUGHNESS = 0.74;
 const PRESENTATION_METALNESS = 0.01;
 
 // Polygon offset per type to reduce z-fighting between overlapping block types
-const POLYGON_OFFSET = { standard: 1, large: 2, cornerA: 3, cornerB: 4 };
+const POLYGON_OFFSET = { standard: 1, large: 2, cornerA: 3, cornerB: 4, largeCornerA: 5, largeCornerB: 6 };
 
 const tempMatrix = new THREE.Matrix4();
 const tempPosition = new THREE.Vector3();
@@ -205,7 +207,8 @@ function getRenderLengthMM(placement) {
   if (typeof placement.renderLength === 'number') {
     return placement.renderLength;
   }
-  return placement.type === 'large' ? LARGE_LENGTH : STANDARD_LENGTH;
+  const isLarge = placement.type === 'large' || placement.type.startsWith('largeCo');
+  return isLarge ? LARGE_LENGTH : STANDARD_LENGTH;
 }
 
 function getRenderDepthMM(placement) {

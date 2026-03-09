@@ -13,6 +13,8 @@
   --block-large: #5a5a5a;
   --block-cornerA: #3a3a3a;
   --block-cornerB: #353535;
+  --block-largeCornerA: #2d2d2d;
+  --block-largeCornerB: #282828;
 }
 
 * {

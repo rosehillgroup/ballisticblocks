@@ -70,18 +70,28 @@ export default function ResultsPanel() {
             <span>Corner Block B</span>
             <span className="breakdown-value">{metrics.counts.cornerB}</span>
           </div>
+          <div className="breakdown-row">
+            <span className="block-swatch largeCornerA"></span>
+            <span>Large Corner A</span>
+            <span className="breakdown-value">{metrics.counts.largeCornerA}</span>
+          </div>
+          <div className="breakdown-row">
+            <span className="block-swatch largeCornerB"></span>
+            <span>Large Corner B</span>
+            <span className="breakdown-value">{metrics.counts.largeCornerB}</span>
+          </div>
         </div>
 
         <div className="breakdown-section">
           <h4>Logistics</h4>
           <div className="breakdown-row">
             <span>Standard Pallets</span>
-            <span className="breakdown-value">{metrics.standardPallets} (24/pallet, incl. corners)</span>
+            <span className="breakdown-value">{metrics.standardPallets} (24/pallet, incl. std corners)</span>
           </div>
           {metrics.largePallets > 0 && (
             <div className="breakdown-row">
               <span>Large Pallets</span>
-              <span className="breakdown-value">{metrics.largePallets} (16/pallet)</span>
+              <span className="breakdown-value">{metrics.largePallets} (16/pallet, incl. lg corners)</span>
             </div>
           )}
           <div className="breakdown-row">

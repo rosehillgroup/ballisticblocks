@@ -82,6 +82,8 @@ export function exportConfigurationPDF(state) {
   y = tableRow(doc, 'Large Blocks', String(metrics.counts.large), y);
   y = tableRow(doc, 'Corner Block A', String(metrics.counts.cornerA), y);
   y = tableRow(doc, 'Corner Block B', String(metrics.counts.cornerB), y);
+  y = tableRow(doc, 'Large Corner A', String(metrics.counts.largeCornerA), y);
+  y = tableRow(doc, 'Large Corner B', String(metrics.counts.largeCornerB), y);
 
   // Totals with highlight
   y += 2;
@@ -100,9 +102,9 @@ export function exportConfigurationPDF(state) {
   // --- Logistics ---
   y = sectionHeading(doc, 'Logistics', y);
 
-  y = tableRow(doc, 'Standard Pallets', `${metrics.standardPallets}  (24/pallet, incl. corners)`, y);
+  y = tableRow(doc, 'Standard Pallets', `${metrics.standardPallets}  (24/pallet, incl. std corners)`, y);
   if (metrics.largePallets > 0) {
-    y = tableRow(doc, 'Large Pallets', `${metrics.largePallets}  (16/pallet)`, y);
+    y = tableRow(doc, 'Large Pallets', `${metrics.largePallets}  (16/pallet, incl. lg corners)`, y);
   }
   const truckText = metrics.truckLoads <= 1
     ? `${metrics.truckCapacityPercent}% of 26t truck`
@@ -133,6 +135,8 @@ export function exportConfigurationPDF(state) {
   y = tableRow(doc, 'Large Block', '763 × 305 × 239 mm  (47 kg)', y);
   y = tableRow(doc, 'Corner Block A', '610 × 305 × 239 mm  (34 kg)', y);
   y = tableRow(doc, 'Corner Block B', '610 × 305 × 239 mm  (34 kg)', y);
+  y = tableRow(doc, 'Large Corner A', '763 × 305 × 239 mm  (47 kg)', y);
+  y = tableRow(doc, 'Large Corner B', '763 × 305 × 239 mm  (47 kg)', y);
 
   // --- Footer ---
   const footerY = 275;

@@ -323,6 +323,8 @@
 .block-swatch.large { background: #e8a840; }
 .block-swatch.cornerA { background: #c0392b; }
 .block-swatch.cornerB { background: #27ae60; }
+.block-swatch.largeCornerA { background: #922d22; }
+.block-swatch.largeCornerB { background: #1e8449; }
 
 .pdf-export-btn {
   display: block;

@@ -106,6 +106,12 @@ export function solveStructure(structureType, dimensions, courses) {
   return { placements, metrics };
 }
 
+// 4-course corner cycle for rectangles and U-shapes.
+// Size alternates every course (std/lg), handedness follows A/B/B/A palindrome.
+const CORNER_CYCLE_LARGE = ['cornerA', 'largeCornerB', 'cornerB', 'largeCornerA'];
+// Standard 2-course corner cycle for straight walls (no large corners).
+const CORNER_CYCLE_STANDARD = ['cornerA', 'cornerB'];
+
 export function solveRectangle(lengthMM, widthMM, courses) {
   const corners = [
     { id: 'sw', position: [0, 0], rotation: 0 },
@@ -121,7 +127,7 @@ export function solveRectangle(lengthMM, widthMM, courses) {
     { id: 'west', start: [0, widthMM], rotation: Math.PI / 2, length: widthMM, startHasCorner: true, endHasCorner: true },
   ];
 
-  return solveLayout(courses, corners, walls);
+  return solveLayout(courses, corners, walls, CORNER_CYCLE_LARGE);
 }
 
 export function solveStraightWall(lengthMM, courses) {
@@ -134,7 +140,7 @@ export function solveStraightWall(lengthMM, courses) {
     { id: 'straight', start: [0, 0], rotation: 0, length: lengthMM, startHasCorner: true, endHasCorner: true },
   ];
 
-  return solveLayout(courses, corners, walls);
+  return solveLayout(courses, corners, walls, CORNER_CYCLE_STANDARD);
 }
 
 export function solveUShape(widthMM, depthMM, courses) {
@@ -177,10 +183,10 @@ export function solveUShape(widthMM, depthMM, courses) {
     },
   ];
 
-  return solveLayout(courses, corners, walls);
+  return solveLayout(courses, corners, walls, CORNER_CYCLE_LARGE);
 }
 
-function solveLayout(courses, corners, walls) {
+function solveLayout(courses, corners, walls, cornerCycle) {
   const placements = [];
   let idCounter = 0;
 
@@ -190,22 +196,24 @@ function solveLayout(courses, corners, walls) {
 
   for (let course = 0; course < courses; course++) {
     const y = course * COURSE_RISE;
-    const cornerType = course % 2 === 0 ? 'cornerA' : 'cornerB';
+    const cornerType = cornerCycle[course % cornerCycle.length];
+    const isLargeCorner = cornerType.startsWith('largeCo');
+    const cornerAdvance = isLargeCorner ? LARGE_ADVANCE : STANDARD_ADVANCE;
     const showTopRib = course === courses - 1;
 
     for (const corner of corners) {
-      placements.push(makeCornerBlock(corner, cornerType, y, course, showTopRib, nextId));
+      placements.push(makeCornerBlock(corner, cornerType, cornerAdvance, y, course, showTopRib, nextId));
     }
 
     for (const wall of walls) {
-      placements.push(...fillWallRun(wall, y, course, showTopRib, nextId));
+      placements.push(...fillWallRun(wall, cornerAdvance, y, course, showTopRib, nextId));
     }
   }
 
   return placements;
 }
 
-function makeCornerBlock(corner, cornerType, y, courseIndex, showTopRib, nextId) {
+function makeCornerBlock(corner, cornerType, cornerAdvance, y, courseIndex, showTopRib, nextId) {
   return {
     id: nextId(),
     type: cornerType,
@@ -214,13 +222,13 @@ function makeCornerBlock(corner, cornerType, y, courseIndex, showTopRib, nextId)
     courseIndex,
     wallId: `corner-${corner.id}`,
     showTopRib,
-    renderLength: STANDARD_ADVANCE,
-    renderDepth: SHELL_DEPTH,
+    renderLength: cornerAdvance,
+    renderDepth: cornerAdvance,
     renderOffset: 0,
   };
 }
 
-function fillWallRun(wall, y, courseIndex, showTopRib, nextId) {
+function fillWallRun(wall, cornerAdvance, y, courseIndex, showTopRib, nextId) {
   const blocks = [];
   const baseDirX = Math.cos(wall.rotation);
   const baseDirZ = -Math.sin(wall.rotation);
@@ -229,8 +237,8 @@ function fillWallRun(wall, y, courseIndex, showTopRib, nextId) {
   const dirZ = baseDirZ * walkSign;
   const flip = wall.depthFlip || false;
 
-  const fillStart = wall.startHasCorner ? STANDARD_ADVANCE : 0;
-  const fillEnd = wall.length - (wall.endHasCorner ? STANDARD_ADVANCE : 0);
+  const fillStart = wall.startHasCorner ? cornerAdvance : 0;
+  const fillEnd = wall.length - (wall.endHasCorner ? cornerAdvance : 0);
   const effectiveLength = fillEnd - fillStart;
 
   if (effectiveLength <= 0) {

@@ -167,6 +167,14 @@ export default function InputPanel() {
           <span>Corner B</span>
           <span>610×305×239mm (34kg)</span>
         </div>
+        <div className="spec-row">
+          <span>Large Corner A</span>
+          <span>763×305×239mm (47kg)</span>
+        </div>
+        <div className="spec-row">
+          <span>Large Corner B</span>
+          <span>763×305×239mm (47kg)</span>
+        </div>
       </div>
 
       <div className="info-box">

@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf';
-import { BLOCK_HEIGHT } from './constants.js';
+import { stackedHeight } from './constants.js';
 
 const NAVY = [26, 54, 93];       // #1a365d
 const ORANGE = [255, 107, 53];   // #ff6b35
@@ -71,7 +71,7 @@ export function exportConfigurationPDF(state) {
     doc.text('Adjusted to nearest buildable size', PAGE_LEFT + 2, y);
     y += 5;
   }
-  y = tableRow(doc, 'Structure Height', `${(courses * BLOCK_HEIGHT / 1000).toFixed(2)} m  (${courses} ${courses === 1 ? 'course' : 'courses'})`, y);
+  y = tableRow(doc, 'Structure Height', `${(stackedHeight(courses) / 1000).toFixed(2)} m  (${courses} ${courses === 1 ? 'course' : 'courses'})`, y);
 
   y += 4;
 

@@ -1,5 +1,5 @@
 import {
-  BLOCK_HEIGHT,
+  stackedHeight,
   STANDARD_WEIGHT_KG,
   LARGE_WEIGHT_KG,
   STANDARD_PALLET_COUNT,
@@ -39,7 +39,7 @@ export function computeMetrics(placements, courses, structureType, buildableDime
   const totalPallets = standardPallets + largePallets;
 
   // Structure height
-  const structureHeight = courses * BLOCK_HEIGHT;
+  const structureHeight = stackedHeight(courses);
 
   // Truck loads (26 tonne capacity)
   const truckLoads = Math.ceil(totalWeight / TRUCK_CAPACITY_KG);

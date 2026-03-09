@@ -1,5 +1,5 @@
 import useConfiguratorStore from '../stores/configuratorStore.js';
-import { BLOCK_HEIGHT } from '../lib/constants.js';
+import { stackedHeight } from '../lib/constants.js';
 
 export default function InputPanel() {
   const structureType = useConfiguratorStore((s) => s.structureType);
@@ -143,7 +143,7 @@ export default function InputPanel() {
         >
           {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
             <option key={n} value={n}>
-              {n} {n === 1 ? 'Course' : 'Courses'} ({((n * BLOCK_HEIGHT) / 1000).toFixed(2)}m)
+              {n} {n === 1 ? 'Course' : 'Courses'} ({(stackedHeight(n) / 1000).toFixed(2)}m)
             </option>
           ))}
         </select>

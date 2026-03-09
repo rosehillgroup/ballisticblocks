@@ -1,7 +1,7 @@
 import { useRef, useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 import { getRenderShellGeometry } from '../geometry/blockGeometry.js';
-import { BLOCK_HEIGHT, BLOCK_DEPTH, STANDARD_LENGTH, LARGE_LENGTH } from '../lib/constants.js';
+import { BLOCK_HEIGHT, COURSE_RISE, BLOCK_DEPTH, STANDARD_LENGTH, LARGE_LENGTH } from '../lib/constants.js';
 import useConfiguratorStore from '../stores/configuratorStore.js';
 
 const BLOCK_TYPES = ['standard', 'large', 'cornerA', 'cornerB'];
@@ -95,7 +95,7 @@ function UShapePresentationShell({ widthMM, depthMM, courses }) {
   return (
     <group>
       {Array.from({ length: courses }).map((_, course) => {
-        const y = course * BLOCK_HEIGHT;
+        const y = course * COURSE_RISE;
         return (
           <group key={`u-presentation-course-${course}`}>
             <mesh

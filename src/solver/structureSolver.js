@@ -1,5 +1,6 @@
 import {
   BLOCK_HEIGHT,
+  COURSE_RISE,
   BLOCK_DEPTH,
   STANDARD_LENGTH,
   LARGE_LENGTH,
@@ -188,7 +189,7 @@ function solveLayout(courses, corners, walls) {
   }
 
   for (let course = 0; course < courses; course++) {
-    const y = course * BLOCK_HEIGHT;
+    const y = course * COURSE_RISE;
     const cornerType = course % 2 === 0 ? 'cornerA' : 'cornerB';
     const showTopRib = course === courses - 1;
 

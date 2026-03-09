@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import BlockScene from './BlockScene.jsx';
 import BlockLegend from './BlockLegend.jsx';
 import useConfiguratorStore from '../stores/configuratorStore.js';
-import { BLOCK_HEIGHT } from '../lib/constants.js';
+import { stackedHeight } from '../lib/constants.js';
 
 export default function Viewport() {
   const structureType = useConfiguratorStore((s) => s.structureType);
@@ -64,7 +64,7 @@ function SceneContents({ viewMode }) {
   // Auto-fit camera when dimensions change
   const target = useMemo(() => {
     const { lengthMM, widthMM } = footprint;
-    const heightMM = courses * BLOCK_HEIGHT;
+    const heightMM = stackedHeight(courses);
     return new THREE.Vector3(lengthMM / 2, heightMM / 2, widthMM / 2);
   }, [footprint, courses]);
 
@@ -72,7 +72,7 @@ function SceneContents({ viewMode }) {
     if (!controlsRef.current) return;
 
     const { lengthMM, widthMM } = footprint;
-    const heightMM = courses * BLOCK_HEIGHT;
+    const heightMM = stackedHeight(courses);
     const maxDim = Math.max(lengthMM, widthMM, heightMM);
 
     controlsRef.current.target.copy(target);

@@ -23,7 +23,14 @@ export const BLOCK_COLORS = {
 
 // Global block dimensions (mm)
 export const BLOCK_HEIGHT = 239;
+export const RIB_HEIGHT = 25;
+export const COURSE_RISE = BLOCK_HEIGHT - RIB_HEIGHT; // 214mm effective rise per stacked course
 export const BLOCK_DEPTH = 305;
+
+/** Finished protective wall height (excludes exposed top rib — not FB6-rated) */
+export function stackedHeight(courses) {
+  return courses * COURSE_RISE;
+}
 export const SPINE_DEPTH = 152; // 31 + 90 + 31
 export const NUB_DEPTH = 153;
 

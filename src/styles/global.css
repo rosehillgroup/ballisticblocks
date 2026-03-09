@@ -1,0 +1,40 @@
+:root {
+  --navy: #1a365d;
+  --navy-light: #2d4a71;
+  --orange: #ff6b35;
+  --orange-hover: #e55a2b;
+  --orange-gradient: #f7931e;
+  --white: #ffffff;
+  --bg-light: #f8f9fa;
+  --border: #e9ecef;
+  --text: #333333;
+  --text-secondary: #6c757d;
+  --block-standard: #4a4a4a;
+  --block-large: #5a5a5a;
+  --block-cornerA: #3a3a3a;
+  --block-cornerB: #353535;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  background: var(--bg-light);
+  color: var(--text);
+  line-height: 1.5;
+  overflow: hidden;
+  height: 100vh;
+}
+
+#root {
+  height: 100vh;
+  overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Overpass', sans-serif;
+}

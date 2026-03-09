@@ -78,7 +78,7 @@ export function exportConfigurationPDF(state) {
   // --- Block Breakdown ---
   y = sectionHeading(doc, 'Block Breakdown', y);
 
-  y = tableRow(doc, 'Standard Blocks', `${metrics.counts.standard}  (${metrics.standardPallets} pallets @ 24/pallet)`, y);
+  y = tableRow(doc, 'Standard Blocks', `${metrics.counts.standard}  (${metrics.standardPallets} pallets @ 24/pallet, incl. corners)`, y);
   y = tableRow(doc, 'Large Blocks', metrics.largePallets > 0 ? `${metrics.counts.large}  (${metrics.largePallets} pallets @ 16/pallet)` : String(metrics.counts.large), y);
   y = tableRow(doc, 'Corner Block A', String(metrics.counts.cornerA), y);
   y = tableRow(doc, 'Corner Block B', String(metrics.counts.cornerB), y);

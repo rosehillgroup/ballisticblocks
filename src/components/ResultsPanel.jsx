@@ -51,7 +51,7 @@ export default function ResultsPanel() {
           <div className="breakdown-row">
             <span className="block-swatch standard"></span>
             <span>Standard Blocks</span>
-            <span className="breakdown-value">{metrics.counts.standard} ({metrics.standardPallets} pallets @ 24/pallet)</span>
+            <span className="breakdown-value">{metrics.counts.standard} ({metrics.standardPallets} pallets @ 24/pallet, incl. corners)</span>
           </div>
           <div className="breakdown-row">
             <span className="block-swatch large"></span>

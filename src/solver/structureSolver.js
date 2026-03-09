@@ -243,23 +243,17 @@ function fillWallRun(wall, y, courseIndex, showTopRib, nextId) {
 
   const maxBlockEnd = wall.endHasCorner ? fillEnd + OVERLAP : fillEnd;
 
+  // Determine wall family from the snapped wall length.
+  // Family A: wall.length = STANDARD_LENGTH + n * STANDARD_ADVANCE  (610 + n×305)
+  // Family B: wall.length = LARGE_LENGTH + OVERLAP + n * STANDARD_ADVANCE  (1068 + n×305)
+  // Only Family B needs one large block for the 153mm geometric correction.
+  const familyARemainder = Math.round(wall.length - STANDARD_LENGTH) % STANDARD_ADVANCE;
+  const isFamilyA = Math.abs(familyARemainder) <= EPS;
+
   let cursor = fillStart;
   let lastPlacedCursor = -1;
-  let placedLeadStandard = false;
 
-  if (wall.startHasCorner && wall.preferStandardAfterCorner) {
-    if (cursor + STANDARD_LENGTH <= maxBlockEnd + EPS) {
-      blocks.push(makeBlock(
-        'standard', cursor, wall.start, dirX, dirZ, y, wall.rotation,
-        courseIndex, wall.id, showTopRib, nextId, flip
-      ));
-      lastPlacedCursor = cursor;
-      cursor += STANDARD_ADVANCE;
-      placedLeadStandard = true;
-    }
-  }
-
-  if (!placedLeadStandard && cursor + LARGE_LENGTH <= maxBlockEnd + EPS) {
+  if (!isFamilyA && cursor + LARGE_LENGTH <= maxBlockEnd + EPS) {
     blocks.push(makeBlock(
       'large', cursor, wall.start, dirX, dirZ, y, wall.rotation,
       courseIndex, wall.id, showTopRib, nextId, flip

@@ -1,7 +1,9 @@
 import useConfiguratorStore from '../stores/configuratorStore.js';
 import { exportConfigurationPDF } from '../lib/pdfExport.js';
+import { STANDARD_LENGTH } from '../lib/constants.js';
 
 export default function ResultsPanel() {
+  const structureType = useConfiguratorStore((s) => s.structureType);
   const metrics = useConfiguratorStore((s) => s.metrics);
 
   const handleExportPDF = () => {
@@ -51,12 +53,12 @@ export default function ResultsPanel() {
           <div className="breakdown-row">
             <span className="block-swatch standard"></span>
             <span>Standard Blocks</span>
-            <span className="breakdown-value">{metrics.counts.standard} ({metrics.standardPallets} pallets @ 24/pallet, incl. corners)</span>
+            <span className="breakdown-value">{metrics.counts.standard}</span>
           </div>
           <div className="breakdown-row">
             <span className="block-swatch large"></span>
             <span>Large Blocks</span>
-            <span className="breakdown-value">{metrics.counts.large}{metrics.largePallets > 0 ? ` (${metrics.largePallets} pallets @ 16/pallet)` : ''}</span>
+            <span className="breakdown-value">{metrics.counts.large}</span>
           </div>
           <div className="breakdown-row">
             <span className="block-swatch cornerA"></span>
@@ -73,13 +75,15 @@ export default function ResultsPanel() {
         <div className="breakdown-section">
           <h4>Logistics</h4>
           <div className="breakdown-row">
-            <span>Wall Length</span>
-            <span className="breakdown-value">{(metrics.perimeterMM / 1000).toFixed(2)} m</span>
+            <span>Standard Pallets</span>
+            <span className="breakdown-value">{metrics.standardPallets} (24/pallet, incl. corners)</span>
           </div>
-          <div className="breakdown-row">
-            <span>Weight per Metre</span>
-            <span className="breakdown-value">{metrics.weightPerMetre.toLocaleString()} kg/m</span>
-          </div>
+          {metrics.largePallets > 0 && (
+            <div className="breakdown-row">
+              <span>Large Pallets</span>
+              <span className="breakdown-value">{metrics.largePallets} (16/pallet)</span>
+            </div>
+          )}
           <div className="breakdown-row">
             <span>Truck Loads (26t)</span>
             <span className="breakdown-value">
@@ -91,6 +95,28 @@ export default function ResultsPanel() {
           <div className="breakdown-row">
             <span>Shipping</span>
             <span className="breakdown-value">{metrics.containerText}</span>
+          </div>
+        </div>
+
+        <div className="breakdown-section">
+          <h4>Structure Geometry</h4>
+          <div className="breakdown-row">
+            <span>Perimeter</span>
+            <span className="breakdown-value">{(metrics.perimeterMM / 1000).toFixed(2)} m</span>
+          </div>
+          {structureType !== 'straight' && (
+            <div className="breakdown-row">
+              <span>Internal Area</span>
+              <span className="breakdown-value">{metrics.internalAreaM2.toFixed(1)} m²</span>
+            </div>
+          )}
+          <div className="breakdown-row">
+            <span>Wall Thickness</span>
+            <span className="breakdown-value">{STANDARD_LENGTH} mm</span>
+          </div>
+          <div className="breakdown-row">
+            <span>Weight per Metre</span>
+            <span className="breakdown-value">{metrics.weightPerMetre.toLocaleString()} kg/m</span>
           </div>
         </div>
       </div>

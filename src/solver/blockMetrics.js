@@ -1,5 +1,6 @@
 import {
   stackedHeight,
+  STANDARD_LENGTH,
   STANDARD_WEIGHT_KG,
   LARGE_WEIGHT_KG,
   STANDARD_PALLET_COUNT,
@@ -69,6 +70,18 @@ export function computeMetrics(placements, courses, structureType, buildableDime
   const perimeterM = perimeterMM / 1000;
   const weightPerMetre = perimeterM > 0 ? Math.round(totalWeight / perimeterM) : 0;
 
+  // Internal area (enclosed footprint minus walls)
+  let internalAreaM2 = 0;
+  if (structureType === 'rectangle') {
+    const innerL = Math.max(0, (dims.lengthMM || 0) - 2 * STANDARD_LENGTH);
+    const innerW = Math.max(0, (dims.widthMM || 0) - 2 * STANDARD_LENGTH);
+    internalAreaM2 = (innerL * innerW) / 1e6;
+  } else if (structureType === 'uShape') {
+    const innerW = Math.max(0, (dims.widthMM || 0) - 2 * STANDARD_LENGTH);
+    const innerD = dims.depthMM || 0;
+    internalAreaM2 = (innerW * innerD) / 1e6;
+  }
+
   return {
     counts,
     totalBlocks,
@@ -81,6 +94,7 @@ export function computeMetrics(placements, courses, structureType, buildableDime
     structureHeight,
     truckLoads,
     truckCapacityPercent,
+    internalAreaM2,
     containerText,
   };
 }

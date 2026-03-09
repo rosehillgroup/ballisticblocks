@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf';
-import { stackedHeight } from './constants.js';
+import { stackedHeight, STANDARD_LENGTH } from './constants.js';
 
 const NAVY = [26, 54, 93];       // #1a365d
 const ORANGE = [255, 107, 53];   // #ff6b35
@@ -78,8 +78,8 @@ export function exportConfigurationPDF(state) {
   // --- Block Breakdown ---
   y = sectionHeading(doc, 'Block Breakdown', y);
 
-  y = tableRow(doc, 'Standard Blocks', `${metrics.counts.standard}  (${metrics.standardPallets} pallets @ 24/pallet, incl. corners)`, y);
-  y = tableRow(doc, 'Large Blocks', metrics.largePallets > 0 ? `${metrics.counts.large}  (${metrics.largePallets} pallets @ 16/pallet)` : String(metrics.counts.large), y);
+  y = tableRow(doc, 'Standard Blocks', String(metrics.counts.standard), y);
+  y = tableRow(doc, 'Large Blocks', String(metrics.counts.large), y);
   y = tableRow(doc, 'Corner Block A', String(metrics.counts.cornerA), y);
   y = tableRow(doc, 'Corner Block B', String(metrics.counts.cornerB), y);
 
@@ -100,15 +100,27 @@ export function exportConfigurationPDF(state) {
   // --- Logistics ---
   y = sectionHeading(doc, 'Logistics', y);
 
-  y = tableRow(doc, 'Wall Length', `${(metrics.perimeterMM / 1000).toFixed(2)} m`, y);
-  y = tableRow(doc, 'Weight per Metre', `${metrics.weightPerMetre.toLocaleString()} kg/m`, y);
-  y = tableRow(doc, 'Total Pallets Required', String(metrics.totalPallets), y, true);
-  y += 2;
+  y = tableRow(doc, 'Standard Pallets', `${metrics.standardPallets}  (24/pallet, incl. corners)`, y);
+  if (metrics.largePallets > 0) {
+    y = tableRow(doc, 'Large Pallets', `${metrics.largePallets}  (16/pallet)`, y);
+  }
   const truckText = metrics.truckLoads <= 1
     ? `${metrics.truckCapacityPercent}% of 26t truck`
     : `${metrics.truckLoads} truck loads (26t each)`;
   y = tableRow(doc, 'Truck Loads', truckText, y);
   y = tableRow(doc, 'Shipping', metrics.containerText, y);
+
+  y += 4;
+
+  // --- Structure Geometry ---
+  y = sectionHeading(doc, 'Structure Geometry', y);
+
+  y = tableRow(doc, 'Perimeter', `${(metrics.perimeterMM / 1000).toFixed(2)} m`, y);
+  if (structureType !== 'straight') {
+    y = tableRow(doc, 'Internal Area', `${metrics.internalAreaM2.toFixed(1)} m²`, y);
+  }
+  y = tableRow(doc, 'Wall Thickness', `${STANDARD_LENGTH} mm`, y);
+  y = tableRow(doc, 'Weight per Metre', `${metrics.weightPerMetre.toLocaleString()} kg/m`, y);
 
   y += 4;
 

@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf';
-import { stackedHeight, STANDARD_LENGTH } from './constants.js';
+import { stackedHeight, BLOCK_DEPTH } from './constants.js';
 
 const NAVY = [26, 54, 93];       // #1a365d
 const ORANGE = [255, 107, 53];   // #ff6b35
@@ -119,7 +119,7 @@ export function exportConfigurationPDF(state) {
   if (structureType !== 'straight') {
     y = tableRow(doc, 'Internal Area', `${metrics.internalAreaM2.toFixed(1)} m²`, y);
   }
-  y = tableRow(doc, 'Wall Thickness', `${STANDARD_LENGTH} mm`, y);
+  y = tableRow(doc, 'Wall Thickness', `${BLOCK_DEPTH} mm`, y);
   y = tableRow(doc, 'Weight per Metre', `${metrics.weightPerMetre.toLocaleString()} kg/m`, y);
 
   y += 4;

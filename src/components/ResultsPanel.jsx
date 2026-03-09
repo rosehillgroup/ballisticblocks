@@ -1,6 +1,6 @@
 import useConfiguratorStore from '../stores/configuratorStore.js';
 import { exportConfigurationPDF } from '../lib/pdfExport.js';
-import { STANDARD_LENGTH } from '../lib/constants.js';
+import { BLOCK_DEPTH } from '../lib/constants.js';
 
 export default function ResultsPanel() {
   const structureType = useConfiguratorStore((s) => s.structureType);
@@ -112,7 +112,7 @@ export default function ResultsPanel() {
           )}
           <div className="breakdown-row">
             <span>Wall Thickness</span>
-            <span className="breakdown-value">{STANDARD_LENGTH} mm</span>
+            <span className="breakdown-value">{BLOCK_DEPTH} mm</span>
           </div>
           <div className="breakdown-row">
             <span>Weight per Metre</span>
